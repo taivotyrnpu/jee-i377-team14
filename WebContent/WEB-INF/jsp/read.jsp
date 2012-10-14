@@ -10,9 +10,10 @@
 <html>
 <head>
     <title>read</title>
-    <c:out value="${nimi}"/>
 </head>
 <body>
-
+	<c:forEach var="nimi" items="${nimed}">
+    	${nimi}
+    </c:forEach>
 </body>
 </html>
