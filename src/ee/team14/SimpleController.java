@@ -20,7 +20,7 @@ public class SimpleController {
             Statement s = conn.createStatement();
             s.execute("CREATE TABLE border (\n" +
                     "\tid INTEGER NOT NULL IDENTITY,\n" +
-                    "\tnimi VARCAR(99),\n" +
+                    "\tnimi VARCHAR(99),\n" +
                     "\taadress VARCHAR(99),\n" +
                     "\thulk INTEGER\n" +
                     ")");
@@ -38,10 +38,12 @@ public class SimpleController {
         Connection conn = getConnection();
         if(conn != null){
             try {
+            	ArrayList<String> nimed = new ArrayList<String>();
                 Statement s = conn.createStatement();
                 ResultSet rs = s.executeQuery("SELECT nimi, aadress, hulk FROM border");
                 while(rs.next()) {
-                  model.addAttribute("nimi", rs.getString("nimi"));
+                	nimed.add(rs.getString("nimi"));
+                	model.addAttribute("nimed", nimed);
                 }
 
             } catch (SQLException e) {
