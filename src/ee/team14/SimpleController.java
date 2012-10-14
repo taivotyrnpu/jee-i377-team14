@@ -20,7 +20,7 @@ public class SimpleController {
             Statement s = conn.createStatement();
             s.execute("CREATE TABLE border (\n" +
                     "\tid INTEGER NOT NULL IDENTITY,\n" +
-                    "\tnimi VARCHAR(99),\n" +
+                    "\tnimi VARCAR(99),\n" +
                     "\taadress VARCHAR(99),\n" +
                     "\thulk INTEGER\n" +
                     ")");
