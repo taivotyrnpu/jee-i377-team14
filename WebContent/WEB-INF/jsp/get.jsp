@@ -6,7 +6,7 @@
 </head>
 <body>
 	<c:forEach var="get" items="${gets}">
-    	${get}
+    	${get}<br/>
     </c:forEach>
 </body>
 </html>

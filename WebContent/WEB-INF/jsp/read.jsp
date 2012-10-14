@@ -13,7 +13,7 @@
 </head>
 <body>
 	<c:forEach var="nimi" items="${nimed}">
-    	${nimi}
+    	${nimi}<br/>
     </c:forEach>
 </body>
 </html>

@@ -74,6 +74,19 @@ public class SimpleController {
         }
         return "welcome";
     }
+    
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public String saveInsert(HttpServletRequest request, Model model) {
+    	ArrayList<String> gets = new ArrayList<String>();
+    	Enumeration paramNames = request.getParameterNames();
+    	while(paramNames.hasMoreElements())
+        {
+    		String elem = paramNames.nextElement();
+    		gets.add(elem)
+        }
+        model.addAttribute("gets", gets);
+        return "get";
+    }
 
     private Connection getConnection() {
         Connection conn = null;
