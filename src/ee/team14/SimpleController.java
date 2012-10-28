@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 
 @Controller
@@ -60,7 +62,7 @@ public class SimpleController {
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public String saveInsert(HttpServletRequest request, Model model) {
+    public String saveInsertPost(HttpServletRequest request, Model model) {
         Connection conn = getConnection();
         if(conn != null){
             try {
@@ -81,11 +83,29 @@ public class SimpleController {
     	Enumeration paramNames = request.getParameterNames();
     	while(paramNames.hasMoreElements())
         {
-    		String elem = paramNames.nextElement();
-    		gets.add(elem)
+    		String elem = (String)paramNames.nextElement();
+    		gets.add(elem);
         }
         model.addAttribute("gets", gets);
         return "get";
+    }
+
+    @RequestMapping(value = "/generateGuards", method = RequestMethod.GET)
+    public String generateGuards(HttpServletRequest request, Model model) {
+
+        String countString = request.getParameter("count");
+        if(countString != null){
+            try{
+                int count = Integer.parseInt(countString);
+                String guardName = NameGenerator.generate();
+                //TODO: salvesta vennikesed baasi ja lisa modelisse, et jsps näidata
+            } catch (NumberFormatException e){
+
+            }
+
+        }
+
+        return "generateGuards";
     }
 
     private Connection getConnection() {
