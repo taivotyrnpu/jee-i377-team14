@@ -5,8 +5,18 @@
     <title>Get params</title>
 </head>
 <body>
-	<c:forEach var="nimi" items="${nimed}">
-    	${nimi}<br/>
+
+<form method="get" action="/searchGuard">
+    Otsi valvurit:<br />
+    Nimi: <input type="text" name="nimi" /><br />
+    Vanus: <input type="text" name="vanus" /><br />
+    <input type="submit" value="Otsi" />
+</form>
+<c:if test="${not empty nimed}">
+    <c:forEach var="nimi" items="${nimed}">
+        ${nimi}<br/>
     </c:forEach>
+</c:if>
+
 </body>
 </html>

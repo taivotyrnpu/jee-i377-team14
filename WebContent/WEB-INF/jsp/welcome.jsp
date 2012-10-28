@@ -11,7 +11,8 @@
 </head>
 <body>
 <div>
-
+ WELCOME! See on väga random leht, sa peaks seda aint siis nägema, kui koodijad pole viitsinud midagi mingit mõistlikku teadest sulle
+    teha.
 </div>
 </body>
 </html>

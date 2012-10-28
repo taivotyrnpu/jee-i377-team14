@@ -23,6 +23,10 @@
 				<td>Aadress:</td>
 				<td><input type="text" name="aadress" value="" /></td>
 			</tr>
+            <tr>
+                <td>Vanus:</td>
+                <td><input type="text" name="vanus" value="" /></td>
+            </tr>
 			<tr>
 				<td>Piirivalvurite hulk:</td>
 				<td><input type="text" name="hulk" value="" /></td>

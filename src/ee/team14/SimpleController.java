@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 
 @Controller
@@ -23,9 +24,26 @@ public class SimpleController {
             s.execute("CREATE TABLE border (\n" +
                     "\tid INTEGER NOT NULL IDENTITY,\n" +
                     "\tnimi VARCHAR(99),\n" +
+                    "\tvanus INTEGER,\n" +
                     "\taadress VARCHAR(99),\n" +
                     "\thulk INTEGER\n" +
                     ")");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+
+        return "welcome";
+    }
+
+    @RequestMapping("/dropAll")
+    public String dropDB(Model model) {
+
+        try {
+            Connection conn = getConnection();
+            Statement s = conn.createStatement();
+            s.execute("DROP TABLE border");
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -67,11 +85,11 @@ public class SimpleController {
         if(conn != null){
             try {
                 Statement s = conn.createStatement();
-                String sql ="INSERT INTO border(nimi, aadress, hulk) VALUES('"+request.getParameter("nimi")+"', '"+
-                        request.getParameter("aadress")+"', "+request.getParameter("hulk")+")";
+                String sql ="INSERT INTO border(nimi, aadress, hulk, vanus) VALUES('"+request.getParameter("nimi")+"', '"+
+                        request.getParameter("aadress")+"', "+request.getParameter("hulk")+","+request.getParameter("vanus")+")";
                 s.execute(sql);
             } catch (SQLException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
         return "welcome";
@@ -95,98 +113,47 @@ public class SimpleController {
 
         String countString = request.getParameter("count");
         if(countString != null){
+            GuardService guardService = new GuardService();
             try{
                 int count = Integer.parseInt(countString);
-                String guardName = NameGenerator.generate();
-                //TODO: salvesta vennikesed baasi ja lisa modelisse, et jsps näidata
+                List<String> guardNames = new ArrayList<String>(count);
+                for(int i =0; i < count; i++) {
+                    String guardName = NameGenerator.generate();
+                    guardService.saveGuard(guardName, null, "0", null);
+                    guardNames.add(guardName);
+                }
+                model.addAttribute("guardNames", guardNames);
             } catch (NumberFormatException e){
-
+              model.addAttribute("error", "Error: "+e);
             }
-
         }
 
-        return "generateGuards";
+        return "generateGuard";
     }
     
     @RequestMapping(value = "/searchGuard", method = RequestMethod.GET)
-    public String loadRead(HttpServletRequest request, Model model) {
-    	String nimi = request.getParameter("name");
-    	String vanus = request.getParameter("age");
-    	
-    	String sql = "SELECT nimi, vanus FROM guards";
-    	bool addAnd = false;
-    	
-    	if(nimi!=null && !nimi.isEmpty()){
-    		sql += " WHERE nimi = '"+request.getParameter("nimi")+"'";
-    		addAnd = true;
-    	}
-    	
-    	if(vanus!=null && !vanus.isEmpty()){
-    		if(addAnd){
-    			sql += " AND ";
-    		} else {
-    			sql += " WHERE ";
-    		}
-    		sql += "vanus = '"+request.getParameter("vanus")+"'";
-    	}
-    	
-    	ArrayList<String> nimed = new ArrayList<String>();
-    	if(conn != null){
-    		try {
-    			Statement s = conn.createStatement();
-    			s.execute(sql);
-    			while(s.next()) {
-    				nimed.add(s.getString("nimi"));
-    				model.addAttribute("nimed", nimed);
-    			}
-    		} catch (SQLException e) {
-    			e.printStackTrace();
-    		}
-    	}
+    public String searchGuard(HttpServletRequest request, Model model) {
+    	String nimi = request.getParameter("nimi");
+    	String vanus = request.getParameter("vanus");
+    	if(nimi != null || vanus != null){
+            GuardService guardService = new GuardService();
+            List<String> nimed = guardService.searchGuards(nimi, vanus);
 
-    	// TODO: jsp's foreach nimed
-    	model.addAttribute("nimed", nimed);
+            // TODO: jsp's foreach nimed
+            model.addAttribute("nimed", nimed);
+        }
     	return "searchGuard";
     }
     
     @RequestMapping(value = "/updateGuard", method = RequestMethod.GET)
-    public String saveInsert(HttpServletRequest request, Model model) {
+    public String updateGuard(HttpServletRequest request, Model model) {
     	String id = request.getParameter("id");
     	String nimi = request.getParameter("name");
     	String vanus = request.getParameter("age");
     	
-    	message = "Vigane ID";
-    	
-    	if(id!=null && !id.isEmpty()){
-    		String sql = "UPDATE guards SET";
-    		bool addComma = false;
-    		
-    		if(vanus!=null && !vanus.isEmpty()){
-    			sql += " vanus = '"+request.getParameter("age")+"'";
-    			addComma = true;
-    		}
-    		
-    		if(nimi!=null && !nimi.isEmpty()){
-    			if(addComma){
-    				sql += ",";
-    			}
-    			sql += " nimi = '"+request.getParameter("nimi")+"'";
-    		}
-    		
-    		sql += " WHERE id = '"+id+"'";
-    		
-    		if(conn != null){
-    			try {
-    				Statement s = conn.createStatement();
-    				s.execute(sql);
-    			} catch (SQLException e) {
-    				e.printStackTrace();
-    			}
-    		}
-    		message = "ID "+id+" uuendatud!";
-    	}
+    	GuardService guardService = new GuardService();
+        String message = guardService.updateGuard(id, nimi, vanus);
 
-    	// TODO: jsp's message v2lja n2idata
     	model.addAttribute("nimed", message);
     	return "updateGuard";
     }
