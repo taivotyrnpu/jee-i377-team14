@@ -107,6 +107,89 @@ public class SimpleController {
 
         return "generateGuards";
     }
+    
+    @RequestMapping(value = "/searchGuard", method = RequestMethod.GET)
+    public String loadRead(HttpServletRequest request, Model model) {
+    	String nimi = request.getParameter("name");
+    	String vanus = request.getParameter("age");
+    	
+    	String sql = "SELECT nimi, vanus FROM guards";
+    	bool addAnd = false;
+    	
+    	if(nimi!=null && !nimi.isEmpty()){
+    		sql += " WHERE nimi = '"+request.getParameter("nimi")+"'";
+    		addAnd = true;
+    	}
+    	
+    	if(vanus!=null && !vanus.isEmpty()){
+    		if(addAnd){
+    			sql += " AND ";
+    		} else {
+    			sql += " WHERE ";
+    		}
+    		sql += "vanus = '"+request.getParameter("vanus")+"'";
+    	}
+    	
+    	ArrayList<String> nimed = new ArrayList<String>();
+    	if(conn != null){
+    		try {
+    			Statement s = conn.createStatement();
+    			s.execute(sql);
+    			while(s.next()) {
+    				nimed.add(s.getString("nimi"));
+    				model.addAttribute("nimed", nimed);
+    			}
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
+
+    	// TODO: jsp's foreach nimed
+    	model.addAttribute("nimed", nimed);
+    	return "searchGuard";
+    }
+    
+    @RequestMapping(value = "/updateGuard", method = RequestMethod.GET)
+    public String saveInsert(HttpServletRequest request, Model model) {
+    	String id = request.getParameter("id");
+    	String nimi = request.getParameter("name");
+    	String vanus = request.getParameter("age");
+    	
+    	message = "Vigane ID";
+    	
+    	if(id!=null && !id.isEmpty()){
+    		String sql = "UPDATE guards SET";
+    		bool addComma = false;
+    		
+    		if(vanus!=null && !vanus.isEmpty()){
+    			sql += " vanus = '"+request.getParameter("age")+"'";
+    			addComma = true;
+    		}
+    		
+    		if(nimi!=null && !nimi.isEmpty()){
+    			if(addComma){
+    				sql += ",";
+    			}
+    			sql += " nimi = '"+request.getParameter("nimi")+"'";
+    		}
+    		
+    		sql += " WHERE id = '"+id+"'";
+    		
+    		if(conn != null){
+    			try {
+    				Statement s = conn.createStatement();
+    				s.execute(sql);
+    			} catch (SQLException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    		message = "ID "+id+" uuendatud!";
+    	}
+
+    	// TODO: jsp's message v2lja n2idata
+    	model.addAttribute("nimed", message);
+    	return "updateGuard";
+    }
 
     private Connection getConnection() {
         Connection conn = null;
