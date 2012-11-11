@@ -35,12 +35,12 @@
 		</tr>
 		<c:forEach items="${incidents}" var="incident">  
 	    	 <tr>
-	    	 	<td>${incident.getEnd}</td>
-	    	 	<td>${incident.getStart}</td>
-	    	 	<td>${incident.getLocation}</td>
-	    	 	<td>${incident.getDescription}</td>
-	    	 	<td>${incident.getInvolvedGuardCount}</td>
-	    	 	<td>${incident.getStatus}</td>
+	    	 	<td>${incident.end}</td>
+	    	 	<td>${incident.start}</td>
+	    	 	<td>${incident.location}</td>
+	    	 	<td>${incident.description}</td>
+	    	 	<td>${incident.involvedGuardCount}</td>
+	    	 	<td>${incident.status}</td>
 	    	 </tr>
 		</c:forEach>
 	</table>

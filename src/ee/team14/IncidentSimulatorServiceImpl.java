@@ -1,23 +1,34 @@
 package ee.team14;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA. User: taivo Date: 11/11/12 Time: 12:11 PM To
  * change this template use File | Settings | File Templates.
  */
 public class IncidentSimulatorServiceImpl implements IncidentService {
-	private Date generateDate(int pos = 0) {
+
+    private static String[] DESCRIPTION = { "Tulistamine",
+            "Pommiplahvatus", "Auto√µnnetus", "Chuck Norris",
+            "Mitte midagi ei juhtunud" };
+
+    private static String[] LOCATIONS = { "Tallinn", "Tartu", "Narva",
+            "Kohtla-J√§rve", "P√§rnu", "Viljandi", "Rakvere", "Maardu",
+            "Sillam√§e", "Kuressaare" };
+
+    private static String[] STATUS = { "Pooleli", "L√µpetatud" };
+
+    private Date generateDate(int pos) {
 		int day, month, year = 2000;
 		
 		Random kp = new Random();
-		month = call.nextInt(12)+1;
+		month = kp.nextInt(12)+1;
 		if(pos == 0){
-			year = call.nextInt(6) + 2000;
+			year = kp.nextInt(6) + 2000;
 		} else {
-			year = call.nextInt(6) + 2006;
+			year = kp.nextInt(6) + 2006;
 		}
-		day = call.nextInt(30);
+		day = kp.nextInt(30);
 
 		GregorianCalendar calendar = new GregorianCalendar(year, month, day);
 		return calendar.getTime();
@@ -25,17 +36,7 @@ public class IncidentSimulatorServiceImpl implements IncidentService {
 
 	@Override
 	public List<Incident> getUnresolvedIncidents() {
-		List<Incident> incidents = new List<Incident>();
-
-		private static String[] DESCRIPTION = { "Tulistamine",
-				"Pommiplahvatus", "Autoınnetus", "Chuck Norris",
-				"Mitte midagi ei juhtunud" };
-
-		private static String[] LOCATIONS = { "Tallinn", "Tartu", "Narva",
-				"Kohtla-J‰rve", "P‰rnu", "Viljandi", "Rakvere", "Maardu",
-				"Sillam‰e", "Kuressaare" };
-		
-		private static String[] STATUS = { "Pooleli", "Lıpetatud" };
+		List<Incident> incidents = new ArrayList<Incident>();
 
 		Random random = new Random();
 		int incidentCount = random.nextInt(10) + 1;
@@ -49,15 +50,37 @@ public class IncidentSimulatorServiceImpl implements IncidentService {
 
 			Incident incident = new Incident();
 			incident.setEnd(generateDate(1));
-			incident.setLocation(locationRandom);
-			incident.setDescription(descriptionRandom);
+			incident.setLocation(locationRandom+"");
+			incident.setDescription(descriptionRandom+"");
 			incident.setInvolvedGuardCount(guardsRandom);
-			incident.setStatus(statusRandom);
+			incident.setStatus(statusRandom+"");
 			incident.setStart(generateDate(0));
-
 			incidents.add(incident);
 		}
 
 		return incidents;
 	}
+
+    public Incident getUnresolvedIncident(String end, String location, String description, String status, String start){
+        Incident incident = new Incident();
+        incident.setEnd(stringToDate(end));
+        incident.setLocation(location);
+        incident.setDescription(description);
+        Random random = new Random();
+        int guardsRandom = random.nextInt(50) + 1;
+        incident.setInvolvedGuardCount(guardsRandom);
+        incident.setStatus(status);
+        incident.setStart(stringToDate(start));
+        return incident;
+    }
+
+    private Date stringToDate(String input){
+        String[] pieces = input.split("\\.");
+        int day = Integer.parseInt(pieces[0]);
+        int month = Integer.parseInt(pieces[1]);
+        int year = Integer.parseInt(pieces[2]);
+
+        GregorianCalendar calendar = new GregorianCalendar(year, month, day);
+        return calendar.getTime();
+    }
 }
