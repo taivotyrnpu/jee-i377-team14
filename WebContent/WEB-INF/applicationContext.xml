@@ -11,15 +11,6 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <!--<context:component-scan base-package="ee.team14" />
-    <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-        <property name="viewClass"
-                  value="org.springframework.web.servlet.view.JstlView" />
-        <property name="prefix" value="/WEB-INF/jsp/" />
-        <property name="suffix" value=".jsp" />
-    </bean>
-    <mvc:annotation-driven />
-    <mvc:resources mapping="/res/**" location="/res/" /> -->
+    <bean id="incidentSimulatorService" class="ee.team14.IncidentSimulatorServiceImpl" />
 
 </beans>
