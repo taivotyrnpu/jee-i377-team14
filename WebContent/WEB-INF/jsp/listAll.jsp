@@ -9,11 +9,40 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>read</title>
+    <title>Intsidentide vaatamine</title>
+	<style>
+	table, td, th {
+		border:1px solid green;
+	}
+	th {
+		background-color:green;
+		color:white;
+	}
+	table tr:nth-child(odd){
+		background-color: lime;
+	}
+	</style>
 </head>
 <body>
-	<c:forEach items="${incidents}" var="incident">  
-    	 ${incident.getStart}<br />
-	</c:forEach>
+	<table>
+		<tr>
+			<th>Algus</th>
+			<th>Lõpp</th>
+			<th>Asukoht</th>
+			<th>Kirjeldus</th>
+			<th>Valvurite arv</th>
+			<th>Staatus</th>
+		</tr>
+		<c:forEach items="${incidents}" var="incident">  
+	    	 <tr>
+	    	 	<td>${incident.getEnd}</td>
+	    	 	<td>${incident.getStart}</td>
+	    	 	<td>${incident.getLocation}</td>
+	    	 	<td>${incident.getDescription}</td>
+	    	 	<td>${incident.getInvolvedGuardCount}</td>
+	    	 	<td>${incident.getStatus}</td>
+	    	 </tr>
+		</c:forEach>
+	</table>
 </body>
 </html>
