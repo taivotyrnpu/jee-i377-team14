@@ -12,7 +12,7 @@
     <title>read</title>
 </head>
 <body>
-	<form action="/incident/listAll" method="post">
+	<form action="/incident/reportIncident" method="post">
 	Algus: <input type="" name="start"><br/>
 	Lõpp: <input type="" name="end"><br/>
 	Asukoht: <input type="" name="location"><br/>

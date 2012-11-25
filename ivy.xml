@@ -19,15 +19,11 @@
 		<dependency org="javax.servlet" name="javax.servlet-api"
 			rev="3.0.1" conf="build->default" />
         <dependency org="javax.servlet" name="jstl"
-                    rev="1.2" conf="build->default" />
-        <!-- Spring -->
-        <!--<dependency org="org.springframework" name="spring-asm" rev="3.0.5.RELEASE"/>
-        <dependency org="org.springframework" name="spring-beans" rev="3.0.5.RELEASE" />
-        <dependency org="org.springframework" name="spring-context" rev="3.0.5.RELEASE" />
-        <dependency org="org.springframework" name="spring-core" rev="3.0.5.RELEASE" />
-        <dependency org="org.springframework" name="spring-expression" rev="3.0.5.RELEASE" /> -->
-        <dependency org="org.springframework" name="spring-web" rev="3.0.5.RELEASE" conf="build->default"/>
-        <dependency org="org.springframework" name="spring-webmvc" rev="3.0.5.RELEASE" conf="build->default"/>
+                    rev="1.2" conf="runtime->default" />
+
+        <dependency org="org.springframework" name="spring-web" rev="3.0.5.RELEASE" conf="source,runtime->default"/>
+        <dependency org="org.springframework" name="spring-webmvc" rev="3.0.5.RELEASE" conf="source,runtime->default"/>
+
         <dependency org="org.hsqldb" name="hsqldb" rev="2.2.8"/>
 
 
