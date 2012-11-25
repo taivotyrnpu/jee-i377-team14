@@ -3,8 +3,6 @@ package ee.team14;
 public class Guard {
 	String nimi;
 	int vanus;
-	String aadress;
-	int hulk;
 	
     public void setNimi(String nimi) {
         this.nimi = nimi;
@@ -20,21 +18,5 @@ public class Guard {
 
     public int getVanus() {
         return vanus;
-    }
-    
-    public void setAadress(String aadress) {
-        this.aadress = aadress;
-    }
-
-    public String getAadress() {
-        return aadress;
-    }
-    
-    public void setHulk(int hulk) {
-        this.hulk = hulk;
-    }
-
-    public int getHulk() {
-        return hulk;
     }
 }
