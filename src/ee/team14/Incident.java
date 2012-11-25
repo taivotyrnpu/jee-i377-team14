@@ -1,18 +1,23 @@
 package ee.team14;
 
+import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
  * User: taivo
  * Date: 11/11/12
  * Time: 12:04 PM
- * To change this template use File | Settings | File Templates.
  */
 public class Incident {
     private Date start;
     private Date end;
+
+    @NotNull
+    @Size(min = 1, max = 3000)
     private String location;
+    @NotBlank
     private String description;
     private Integer involvedGuardCount;
     private String status;

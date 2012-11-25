@@ -1,7 +1,11 @@
 package ee.team14;
 
-public class Guard {
-	String aadress;
+import org.hibernate.validator.constraints.NotBlank;
+
+public class Border {
+
+    @NotBlank
+    String aadress;
 	int hulk;
     
     public void setAadress(String aadress) {

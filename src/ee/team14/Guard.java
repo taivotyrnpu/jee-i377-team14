@@ -1,7 +1,13 @@
 package ee.team14;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Guard {
-	String nimi;
+
+    @NotNull
+    @Size(min = 1, max = 3000)
+    String nimi;
 	int vanus;
 	
     public void setNimi(String nimi) {
