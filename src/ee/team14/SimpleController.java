@@ -21,13 +21,6 @@ public class SimpleController {
         try {
             Connection conn = getConnection();
             Statement s = conn.createStatement();
-            s.execute("CREATE TABLE border (\n" +
-                    "\tid INTEGER NOT NULL IDENTITY,\n" +
-                    "\tnimi VARCHAR(99),\n" +
-                    "\tvanus INTEGER,\n" +
-                    "\taadress VARCHAR(99),\n" +
-                    "\thulk INTEGER\n" +
-                    ")");
 
             s.execute("CREATE TABLE piirivalvur (\n" +
                     "\tid BIGINT NOT NULL IDENTITY,\n" +
@@ -103,7 +96,6 @@ public class SimpleController {
         try {
             Connection conn = getConnection();
             Statement s = conn.createStatement();
-            s.execute("DROP TABLE border;");
             s.execute("DROP TABLE piirivalvur;");
             s.execute("DROP TABLE auaste_tyyp;");
             s.execute("DROP TABLE auaste;");

@@ -37,7 +37,7 @@
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${auastmed}" var="auaste">
             <tr>
-                <td><input name="existing.auaste[<c:out value="${count}" />].nimi" value="${auaste.kood}" /></td>
+                <td><input name="existing.auaste[<c:out value="${count}" />].kood" value="${auaste.kood}" /></td>
                 <td><input name="existing.auaste[<c:out value="${count}" />].nimetus" value="${auaste.nimetus}" /></td>
                 <td><input name="existing.auaste[<c:out value="${count}" />].tyyp" value="${auaste.tyyp}" /></td>
             </tr>

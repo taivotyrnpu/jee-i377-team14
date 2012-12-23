@@ -29,7 +29,7 @@ public class BorderService {
         p.setKommentaar(kommentaar);
         if(id != null)
             p.setId(id);
-        borderDAO.saveNewPiirivalvur(p);
+        borderDAO.saveOrUpdateEntity(p);
     }
 
     public void addNewAuasteTyyp(String kood, String nimetus, String kommentaar){
@@ -38,7 +38,7 @@ public class BorderService {
         a.setNimetus(nimetus);
         a.setKommentaar(kommentaar);
 
-        borderDAO.saveNewAuasteTyyp(a);
+        borderDAO.saveOrUpdateEntity(a);
     }
 
     public void addNewAuaste(String kood, String nimetus, int tyyp){
@@ -47,7 +47,7 @@ public class BorderService {
         a.setNimetus(nimetus);
         a.setTyyp(tyyp);
 
-        borderDAO.saveNewAuaste(a);
+        borderDAO.saveOrUpdateEntity(a);
     }
 
     public void addNewPiirivalvurAuaste(String alates, String kuni, long auasteId, long piirivalvurId, String kommentaatr){
@@ -58,7 +58,7 @@ public class BorderService {
         a.convertAndSetKuni(kuni);
         a.setPiirivalvur_id(piirivalvurId);
 
-        borderDAO.saveNewPiirivalvurAuaste(a);
+        borderDAO.saveOrUpdateEntity(a);
     }
 
     public List<Piirivalvur> getAllPiirivalvur(){
@@ -81,20 +81,13 @@ public class BorderService {
         return piirivalvurAuasteList;
     }
 
-    public void updatePiirivalvur(Long id, String name){
-        Piirivalvur p = new Piirivalvur();
-        p.setEesnimi(name);
-        p.setId(id);
-        borderDAO.updatePiirivalvur(p);
-    }
-
     public void updateAuasteTyyp(Long id, String kood, String nimetus, String kommentaar){
         AuasteTyyp auasteTyyp = new AuasteTyyp();
         auasteTyyp.setId(id);
         auasteTyyp.setKood(kood);
         auasteTyyp.setNimetus(nimetus);
         auasteTyyp.setKommentaar(kommentaar);
-        borderDAO.updateAuasteTyyp(auasteTyyp);
+        borderDAO.saveOrUpdateEntity(auasteTyyp);
     }
 
     public void updateAuaste(Long id, String kood, String nimetus, int tyyp){
@@ -103,7 +96,7 @@ public class BorderService {
         auaste.setKood(kood);
         auaste.setNimetus(nimetus);
         auaste.setTyyp(tyyp);
-        borderDAO.updateAuaste(auaste);
+        borderDAO.saveOrUpdateEntity(auaste);
     }
 
     public void updatePiirivalvurAuaste(Long id, String kommentaar, long auasteId, long piirivalvurId, String alates, String kuni){
@@ -114,7 +107,7 @@ public class BorderService {
         pva.setPiirivalvur_id(piirivalvurId);
         //pva.setAuaste_id(auasteId);
         pva.setKommentaar(kommentaar);
-        borderDAO.updatePiirivalvurAuaste(pva);
+        borderDAO.saveOrUpdateEntity(pva);
     }
 
     public void addOrUpdatePiirivalvur(HttpServletRequest request){
