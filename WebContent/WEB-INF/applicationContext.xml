@@ -13,4 +13,26 @@
 
     <bean id="incidentSimulatorService" class="ee.team14.IncidentSimulatorServiceImpl" />
 
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+        <property name="url" value="jdbc:hsqldb:/home/taivo/Documents/kool/java/db/BorderDB;shutdown=true" />
+        <property name="username" value="SA" />
+        <property name="password" value="" />
+    </bean>
+
+    <bean id="mySessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="ee.team14.entity" />
+    </bean>
+
+    <bean name="borderService" class="ee.team14.service.BorderService">
+        <property name="borderDAO" ref="borderDao" />
+    </bean>
+
+    <bean name="borderDao" class="ee.team14.dao.BorderDAO">
+        <property name="sessionFactory" ref="mySessionFactory" />
+    </bean>
+
 </beans>

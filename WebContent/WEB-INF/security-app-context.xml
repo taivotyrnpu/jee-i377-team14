@@ -7,15 +7,24 @@
                     http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
     <http auto-config='true'>
-        <intercept-url pattern="/*/view" filters="none" />
-        <intercept-url pattern="/*/edit" access="ROLE_USER" />
-        <intercept-url pattern="/*/delete" access="ROLE_ADMIN" />
+        <intercept-url pattern="/piirivalvur" method="GET" access="ROLE_READ" />
+        <intercept-url pattern="/piirivalvur" method="POST" access="ROLE_ADD, ROLE_EDIT" />
+
+        <intercept-url pattern="/auaste" method="GET" access="ROLE_READ" />
+        <intercept-url pattern="/auaste" method="POST" access="ROLE_ADD, ROLE_EDIT" />
+
+        <intercept-url pattern="/auasteTyyp" method="GET" access="ROLE_READ" />
+        <intercept-url pattern="/auasteTyyp" method="POST" access="ROLE_ADD, ROLE_EDIT" />
+
+        <intercept-url pattern="/piirivalvurAuaste" method="GET" access="ROLE_READ" />
+        <intercept-url pattern="/piirivalvurAuaste" method="POST" access="ROLE_ADD, ROLE_EDIT" />
     </http>
     <authentication-manager>
         <authentication-provider>
             <user-service>
-                <user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN" />
-                <user name="bob" password="bobspassword" authorities="ROLE_USER" />
+                <user name="admin" password="admin" authorities="ROLE_ADD, ROLE_READ, ROLE_EDIT" />
+                <user name="ylem" password="ylem" authorities="ROLE_READ, ROLE_EDIT" />
+                <user name="valvur" password="valvur" authorities="ROLE_READ" />
             </user-service>
         </authentication-provider>
     </authentication-manager>

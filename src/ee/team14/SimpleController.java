@@ -29,6 +29,66 @@ public class SimpleController {
                     "\thulk INTEGER\n" +
                     ")");
 
+            s.execute("CREATE TABLE piirivalvur (\n" +
+                    "\tid BIGINT NOT NULL IDENTITY,\n" +
+                    "\teesnimi VARCHAR(99),\n" +
+                    "\tperekonnanimi VARCHAR(99),\n" +
+                    "\tisikukood VARCHAR(11),\n" +
+                    "\temail VARCHAR(50),\n" +
+                    "\tkommentaar VARCHAR(150),\n" +
+                    "\tsodurikood VARCHAR(20),\n" +
+                    "\taadress VARCHAR(99),\n" +
+                    "\tsugu VARCHAR(1),\n" +
+                    "\ttelefon VARCHAR(30),\n" +
+                    "\tavaja VARCHAR(99),\n" +
+                    "\tmuutja VARCHAR(99),\n" +
+                    "\tsulgeja VARCHAR(99),\n" +
+                    "\tavatud DATE,\n" +
+                    "\tmuudetud DATE,\n" +
+                    "\tsuletud DATE\n" +
+                    ")");
+
+            s.execute("CREATE TABLE auaste_tyyp (\n" +
+                    "\tid BIGINT NOT NULL IDENTITY,\n" +
+                    "\tkood VARCHAR(99),\n" +
+                    "\tnimetus VARCHAR(99),\n" +
+                    "\tkommentaar VARCHAR(150),\n" +
+                    "\tavaja VARCHAR(99),\n" +
+                    "\tmuutja VARCHAR(99),\n" +
+                    "\tsulgeja VARCHAR(99),\n" +
+                    "\tavatud DATE,\n" +
+                    "\tmuudetud DATE,\n" +
+                    "\tsuletud DATE\n" +
+                    ")");
+
+            s.execute("CREATE TABLE auaste (\n" +
+                    "\tid BIGINT NOT NULL IDENTITY,\n" +
+                    "\tkood VARCHAR(99),\n" +
+                    "\tnimetus VARCHAR(99),\n" +
+                    "\ttyyp INTEGER,\n" +
+                    "\tavaja VARCHAR(99),\n" +
+                    "\tmuutja VARCHAR(99),\n" +
+                    "\tsulgeja VARCHAR(99),\n" +
+                    "\tavatud DATE,\n" +
+                    "\tmuudetud DATE,\n" +
+                    "\tsuletud DATE\n" +
+                    ")");
+
+            s.execute("CREATE TABLE piirivalvur_auaste (\n" +
+                    "\tid BIGINT NOT NULL IDENTITY,\n" +
+                    "\tauaste_id BIGINT,\n" +
+                    "\tpiirivalvur_id BIGINT,\n" +
+                    "\tkommentaar VARCHAR(99),\n" +
+                    "\talates TIMESTAMP,\n" +
+                    "\tkuni TIMESTAMP,\n" +
+                    "\tavaja VARCHAR(99),\n" +
+                    "\tmuutja VARCHAR(99),\n" +
+                    "\tsulgeja VARCHAR(99),\n" +
+                    "\tavatud DATE,\n" +
+                    "\tmuudetud DATE,\n" +
+                    "\tsuletud DATE\n" +
+                    ")");
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -43,7 +103,12 @@ public class SimpleController {
         try {
             Connection conn = getConnection();
             Statement s = conn.createStatement();
-            s.execute("DROP TABLE border");
+            s.execute("DROP TABLE border;");
+            s.execute("DROP TABLE piirivalvur;");
+            s.execute("DROP TABLE auaste_tyyp;");
+            s.execute("DROP TABLE auaste;");
+            s.execute("DROP TABLE piirivalvur_auaste;");
+
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -51,111 +116,6 @@ public class SimpleController {
 
 
         return "welcome";
-    }
-
-    @RequestMapping(value = "/read", method = RequestMethod.GET)
-    public String loadRead(HttpServletRequest request, Model model) {
-        Connection conn = getConnection();
-        if(conn != null){
-            try {
-            	ArrayList<String> nimed = new ArrayList<String>();
-                Statement s = conn.createStatement();
-                ResultSet rs = s.executeQuery("SELECT nimi, aadress, hulk FROM border");
-                while(rs.next()) {
-                	nimed.add(rs.getString("nimi"));
-                	model.addAttribute("nimed", nimed);
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return "read";
-    }
-
-    @RequestMapping(value = "/insert", method = RequestMethod.GET)
-    public String loadInsert(HttpServletRequest request, Model model) {
-
-        return "insert";
-    }
-
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public String saveInsertPost(HttpServletRequest request, Model model) {
-        Connection conn = getConnection();
-        if(conn != null){
-            try {
-                Statement s = conn.createStatement();
-                String sql ="INSERT INTO border(nimi, aadress, hulk, vanus) VALUES('"+request.getParameter("nimi")+"', '"+
-                        request.getParameter("aadress")+"', "+request.getParameter("hulk")+","+request.getParameter("vanus")+")";
-                s.execute(sql);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return "welcome";
-    }
-    
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public String saveInsert(HttpServletRequest request, Model model) {
-    	ArrayList<String> gets = new ArrayList<String>();
-    	Enumeration paramNames = request.getParameterNames();
-    	while(paramNames.hasMoreElements())
-        {
-    		String elem = (String)paramNames.nextElement();
-    		gets.add(elem);
-        }
-        model.addAttribute("gets", gets);
-        return "get";
-    }
-
-    @RequestMapping(value = "/generateGuards", method = RequestMethod.GET)
-    public String generateGuards(HttpServletRequest request, Model model) {
-
-        String countString = request.getParameter("count");
-        if(countString != null){
-            GuardService guardService = new GuardService();
-            try{
-                int count = Integer.parseInt(countString);
-                List<String> guardNames = new ArrayList<String>(count);
-                for(int i =0; i < count; i++) {
-                    String guardName = NameGenerator.generate();
-                    guardService.saveGuard(guardName, null, "0", null);
-                    guardNames.add(guardName);
-                }
-                model.addAttribute("guardNames", guardNames);
-            } catch (NumberFormatException e){
-              model.addAttribute("error", "Error: "+e);
-            }
-        }
-
-        return "generateGuard";
-    }
-    
-    @RequestMapping(value = "/searchGuard", method = RequestMethod.GET)
-    public String searchGuard(HttpServletRequest request, Model model) {
-    	String nimi = request.getParameter("nimi");
-    	String vanus = request.getParameter("vanus");
-    	if(nimi != null || vanus != null){
-            GuardService guardService = new GuardService();
-            List<String> nimed = guardService.searchGuards(nimi, vanus);
-
-            // TODO: jsp's foreach nimed
-            model.addAttribute("nimed", nimed);
-        }
-    	return "searchGuard";
-    }
-    
-    @RequestMapping(value = "/updateGuard", method = RequestMethod.GET)
-    public String updateGuard(HttpServletRequest request, Model model) {
-    	String id = request.getParameter("id");
-    	String nimi = request.getParameter("name");
-    	String vanus = request.getParameter("age");
-    	
-    	GuardService guardService = new GuardService();
-        String message = guardService.updateGuard(id, nimi, vanus);
-
-    	model.addAttribute("nimed", message);
-    	return "updateGuard";
     }
 
     private Connection getConnection() {
